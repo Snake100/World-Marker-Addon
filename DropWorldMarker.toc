@@ -1,0 +1,9 @@
+## Interface: 120000
+## Title: DropWorldMarker
+## Notes: Place world markers at cursor with a single keybind, cycling through selected markers
+## Author: Your Name
+## Version: 1.0.0
+## SavedVariables: DropWorldMarkerDB
+
+Core.lua
+Options.lua
