@@ -19,6 +19,7 @@ addon.MARKERS = {
 local defaults = {
     markerSequence = { 1, 2, 3, 4, 5, 6, 7, 8 },
     showChatMessage = true,
+    debugMode = false,
 }
 
 -- Create the main secure button using secure handler for combat support
@@ -53,6 +54,14 @@ SecureHandlerWrapScript(mainButton, "PreClick", mainButton, [[
 
 -- PostClick for chat feedback (this is insecure, just for messages)
 mainButton:SetScript("PostClick", function(self)
+    if DropWorldMarkerDB.debugMode then
+        local macrotext = self:GetAttribute("macrotext")
+        local pos = self:GetAttribute("sequencePos")
+        local len = self:GetAttribute("sequenceLen")
+        print("|cFFFF00FFDebug:|r macrotext=" .. tostring(macrotext))
+        print("|cFFFF00FFDebug:|r pos=" .. tostring(pos) .. " len=" .. tostring(len))
+    end
+
     if DropWorldMarkerDB.showChatMessage then
         local macrotext = self:GetAttribute("macrotext")
         local markerIndex = tonumber(macrotext:match("%d+$"))
@@ -73,6 +82,11 @@ clearButton:RegisterForClicks("AnyUp")
 clearButton:Hide()
 
 clearButton:SetScript("PostClick", function(self)
+    if DropWorldMarkerDB.debugMode then
+        local macrotext = self:GetAttribute("macrotext")
+        print("|cFFFF00FFDebug:|r clear macrotext=" .. tostring(macrotext))
+    end
+
     -- Reset sequence position (only works out of combat)
     if not InCombatLockdown() then
         mainButton:SetAttribute("sequencePos", 1)
@@ -130,32 +144,28 @@ SlashCmdList["DROPWORLDMARKER"] = function(msg)
     msg = msg:lower():trim()
 
     if msg == "place" or msg == "" then
-        if not InCombatLockdown() then
-            mainButton:Click("LeftButton")
-        else
-            print("|cFFFF6600DropWorldMarker:|r Cannot use slash command during combat - use keybind")
-        end
+        print("|cFFFF6600DropWorldMarker:|r Use your keybind to place markers (slash commands can't execute protected actions)")
     elseif msg == "clear" then
-        if not InCombatLockdown() then
-            clearButton:Click("LeftButton")
-        else
-            print("|cFFFF6600DropWorldMarker:|r Cannot use slash command during combat - use keybind")
-        end
+        print("|cFFFF6600DropWorldMarker:|r Use your keybind to clear markers (slash commands can't execute protected actions)")
     elseif msg == "reset" then
         addon:ResetCycle()
         print("|cFF00FF00DropWorldMarker:|r Sequence reset to beginning")
     elseif msg == "config" or msg == "options" then
-        Settings.OpenToCategory("DropWorldMarker")
+        -- Open addon settings panel
+        if addon.settingsCategoryID then
+            Settings.OpenToCategory(addon.settingsCategoryID)
+        else
+            print("|cFFFF6600DropWorldMarker:|r Settings not yet loaded. Try again in a moment.")
+        end
     elseif msg == "sync" then
         addon:SyncSequenceToButton()
         print("|cFF00FF00DropWorldMarker:|r Sequence synced to button")
     else
         print("|cFF00FF00DropWorldMarker Commands:|r")
-        print("  /dwm - Place next marker")
-        print("  /dwm clear - Clear all markers")
         print("  /dwm reset - Reset sequence to beginning")
         print("  /dwm config - Open options panel")
         print("  /dwm sync - Sync sequence after changes")
+        print("|cFFAAAAAA(Use keybinds to place/clear markers)|r")
     end
 end
 

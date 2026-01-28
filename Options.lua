@@ -238,9 +238,17 @@ local function CreateOptionsPanel()
         DropWorldMarkerDB.showChatMessage = self:GetChecked() and true or false
     end)
 
+    -- Debug mode checkbox
+    local debugCheckbox = CreateFrame("CheckButton", "DropWorldMarkerDebugCheck", panel, "InterfaceOptionsCheckButtonTemplate")
+    debugCheckbox:SetPoint("TOPLEFT", chatCheckbox, "BOTTOMLEFT", 0, -5)
+    debugCheckbox.Text:SetText("Debug mode (print macro commands to chat)")
+    debugCheckbox:SetScript("OnClick", function(self)
+        DropWorldMarkerDB.debugMode = self:GetChecked() and true or false
+    end)
+
     -- Slash command info
     local slashInfo = panel:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
-    slashInfo:SetPoint("TOPLEFT", chatCheckbox, "BOTTOMLEFT", 0, -20)
+    slashInfo:SetPoint("TOPLEFT", debugCheckbox, "BOTTOMLEFT", 0, -20)
     slashInfo:SetText("|cFFFFFF00Commands:|r /dwm, /dwm clear, /dwm reset, /dwm config")
     slashInfo:SetJustifyH("LEFT")
 
@@ -264,6 +272,7 @@ local function CreateOptionsPanel()
         end
 
         chatCheckbox:SetChecked(DropWorldMarkerDB.showChatMessage)
+        debugCheckbox:SetChecked(DropWorldMarkerDB.debugMode)
 
         -- Update keybind button texts
         placeKeybindBtn:SetText(GetKeyText(DropWorldMarkerDB.placeKey))
@@ -272,8 +281,11 @@ local function CreateOptionsPanel()
 
     -- Register with the new Settings API (Dragonflight+)
     local category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
-    category.ID = panel.name
     Settings.RegisterAddOnCategory(category)
+
+    -- Store category for opening via slash command
+    addon.settingsCategory = category
+    addon.settingsCategoryID = category:GetID()
 
     -- Call refresh when panel is shown
     panel:SetScript("OnShow", panel.refresh)

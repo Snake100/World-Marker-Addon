@@ -1,0 +1,19 @@
+package-as: DropWorldMarker
+
+curseforge-id: 1445999
+
+enable-nolib-creation: no
+
+ignore:
+  - .git
+  - .gitignore
+  - .claude
+  - CLAUDE.md
+  - README.md
+  - "*.zip"
+  - "*.png"
+  - Screenshots
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
