@@ -2,6 +2,15 @@
 
 All notable changes to DropWorldMarker will be documented in this file.
 
+## [1.0.3] - 2026-04-09
+
+### Fixed
+- Fixed keybinds not working when "Cast on Key Down" is enabled (ActionButtonUseKeyDown CVar)
+- Added `useOnKeyDown` attribute to override CVar per-button
+
+### Changed
+- Updated interface version to 120001 for WoW 12.0.1
+
 ## [1.0.2] - 2026-01-27
 
 ### Fixed
