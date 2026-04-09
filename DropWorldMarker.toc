@@ -1,4 +1,4 @@
-## Interface: 120000
+## Interface: 120001
 ## Title: DropWorldMarker
 ## Notes: Place world markers at cursor with a single keybind, cycling through selected markers
 ## Author: Your Name
