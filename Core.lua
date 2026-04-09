@@ -29,7 +29,7 @@ mainButton:SetAttribute("macrotext", "/wm [@cursor] 1")
 mainButton:SetAttribute("sequencePos", 1)
 mainButton:SetAttribute("sequenceLen", 8)
 mainButton:SetAttribute("useOnKeyDown", false) -- Override ActionButtonUseKeyDown CVar
-mainButton:RegisterForClicks("AnyDown", "AnyUp")
+mainButton:RegisterForClicks("AnyUp")
 mainButton:Hide()
 
 -- Secure pre-click handler - this runs in secure environment BEFORE the action
@@ -80,7 +80,7 @@ local clearButton = CreateFrame("Button", "DWMClearBtn", UIParent, "SecureAction
 clearButton:SetAttribute("type", "macro")
 clearButton:SetAttribute("macrotext", "/cwm all")
 clearButton:SetAttribute("useOnKeyDown", false) -- Override ActionButtonUseKeyDown CVar
-clearButton:RegisterForClicks("AnyDown", "AnyUp")
+clearButton:RegisterForClicks("AnyUp")
 clearButton:Hide()
 
 clearButton:SetScript("PostClick", function(self)
